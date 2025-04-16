@@ -5,6 +5,7 @@ import cors from "cors";
 import session from "express-session";
 import "dotenv/config";
 import UserRoutes from "./Users/routes.js";
+import FollowRoutes from "./Follows/routes.js";
 
 const app = express()
 app.use(
@@ -31,5 +32,6 @@ const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.
 mongoose.connect(CONNECTION_STRING);
 app.use(express.json());
 UserRoutes(app);
+FollowRoutes(app);
 
 app.listen(process.env.PORT || 4000)

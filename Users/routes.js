@@ -3,7 +3,7 @@ import * as dao from "./dao.js";
 export default function UserRoutes(app) {
 
     // Return all users
-    app.get("/api/rocks/users", async (req, res) => {
+    app.get("/api/users", async (req, res) => {
         const status = await dao.getAllUsers();
         res.send(status);
     });
@@ -27,19 +27,20 @@ export default function UserRoutes(app) {
     });
 
 
-    // Get the profile for the current user
-    app.post("/api/users/profile", async (req, res) => {
+    // Get the profile for the user with the given cid
+    app.get("/api/users/:cid", async (req, res) => {
+        const { cid } = req.params;
+        const user = await dao.findUserById(cid)
+        res.json(user);
+    });
+
+    // Get the profile for the session
+    app.post("/api/users/profile", (req, res) => {
         const currentUser = req.session["currentUser"];
         if (!currentUser) {
             res.sendStatus(401);
             return;
         }
         res.json(currentUser);
-    });
-
-    // Sign out the current user
-    app.post("/api/users/signout", (req, res) => {
-        req.session.destroy();
-        res.sendStatus(200);
     });
 };

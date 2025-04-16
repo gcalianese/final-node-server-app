@@ -5,6 +5,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     firstName: String,
     email: String,
+    phoneNumber: String,
     lastName: String,
     dob: Date,
     role: {
@@ -17,7 +18,6 @@ const userSchema = new mongoose.Schema({
     },
     loginId: String,
     homeGym: String,
-    followerCount: String,
     followingCount: String,
     postCount: String
 },

@@ -9,3 +9,8 @@ export function getAllUsers() {
 export function findUserByCredentials(username, password) {
     return model.findOne({ username, password });
 }
+
+// Find a user with the given cid
+export function findUserById(cid) {
+    return model.findById(cid);
+}
