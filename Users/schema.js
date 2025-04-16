@@ -16,9 +16,7 @@ const userSchema = new mongoose.Schema({
         default: "USER"
         ,
     },
-    loginId: String,
     homeGym: String,
-    followingCount: String,
     postCount: String
 },
     { collection: "users" }

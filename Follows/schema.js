@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 const followSchema = new mongoose.Schema({
     _id: String,
-    follower: String,
-    followed: String,
+    follower: { type: String, ref: "UserModel" },
+    followed: { type: String, ref: "UserModel" }
 },
     { collection: "follows" }
 );
