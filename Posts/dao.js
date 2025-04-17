@@ -23,3 +23,10 @@ export async function getUsernamesForSends(sends) {
 export function getSendsForUser(cid) {
     return model.find({ category: "SENDS" });
 }
+
+// Return posts marked SENDS for the users with the given ids
+export async function getSendsByUsers(userIds) {
+    const sends = await model.find({ category: "SENDS", postedBy: { $in: userIds } });
+    const sendsWithUsernames = await getUsernamesForSends(sends);
+    return sendsWithUsernames;
+}
