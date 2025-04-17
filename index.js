@@ -6,6 +6,7 @@ import session from "express-session";
 import "dotenv/config";
 import UserRoutes from "./Users/routes.js";
 import FollowRoutes from "./Follows/routes.js";
+import PostRoutes from "./Posts/routes.js";
 
 const app = express()
 app.use(
@@ -33,5 +34,6 @@ mongoose.connect(CONNECTION_STRING);
 app.use(express.json());
 UserRoutes(app);
 FollowRoutes(app);
+PostRoutes(app);
 
 app.listen(process.env.PORT || 4000)
