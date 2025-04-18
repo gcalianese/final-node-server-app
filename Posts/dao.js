@@ -3,29 +3,29 @@ import userModel from "../Users/model.js"
 import fs from "fs/promises";
 import path from "path";
 
-// Return all posts marked SENDS
-export async function getAllSends() {
-    const sends = await model.find({ category: "SENDS" });
-    const sendsWithUsernames = await getUsernamesForSends(sends);
-    return sendsWithUsernames;
+// Return all posts marked with the given category
+export async function getAllPostsWithCat(cat) {
+    const posts = await model.find({ category: cat });
+    const postsWithUsernames = await getUsernamesForPosts(posts);
+    return postsWithUsernames;
 }
 
 // Return the given list of SENDS posts with the usernames embedded
-export async function getUsernamesForSends(sends) {
-    const sendsWithUsernames = await Promise.all(sends.map(async (send) => {
-        const user = await userModel.findOne({ _id: send.postedBy });
+export async function getUsernamesForPosts(posts) {
+    const postsWithUsernames = await Promise.all(posts.map(async (post) => {
+        const user = await userModel.findOne({ _id: post.postedBy });
         const username = user.username;
-        const sendWithUsername = { ...send.toObject(), username: username };
-        return sendWithUsername;
+        const postWithUsername = { ...post.toObject(), username: username };
+        return postWithUsername;
     }));
-    return sendsWithUsernames;
+    return postsWithUsernames;
 }
 
-// Return posts marked SENDS for the users with the given ids
-export async function getSendsByUsers(userIds) {
-    const sends = await model.find({ category: "SENDS", postedBy: { $in: userIds } });
-    const sendsWithUsernames = await getUsernamesForSends(sends);
-    return sendsWithUsernames;
+// Return posts marked with the given category for the users with the given ids
+export async function getPostsByUsers(cat, userIds) {
+    const posts = await model.find({ category: cat, postedBy: { $in: userIds } });
+    const postsWithUsernames = await getUsernamesForPosts(posts);
+    return postsWithUsernames;
 }
 
 // insert a post to the database
@@ -49,7 +49,7 @@ export async function deletePost(pid) {
 }
 
 // get all posts by the user with the given id
-export async function getPostsByUser(uid) {
+export async function getAllPostsByUser(uid) {
     const posts = await model.find({ postedBy: uid});
     return posts;
 }
