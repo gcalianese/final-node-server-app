@@ -30,3 +30,8 @@ export async function getSendsByUsers(userIds) {
     const sendsWithUsernames = await getUsernamesForSends(sends);
     return sendsWithUsernames;
 }
+
+export async function uploadImage(newPost) {
+    const savedPost = await model.create(newPost);
+    return savedPost;
+}

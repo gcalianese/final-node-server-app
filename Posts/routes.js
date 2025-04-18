@@ -36,21 +36,17 @@ export default function PostRoutes(app) {
     });
     const upload = multer({ storage });
 
-    // Create post with image using model.create()
     app.post("/api/posts/sends", upload.single("image"), async (req, res) => {
-        console.log("hit endpoint")
         try {
-            const { caption, category, postedBy } = req.body;
+            const { post } = req.body;
             const img = req.file?.path; // Path to the uploaded file
 
             if (!img) {
                 return res.status(400).json({ error: "Image upload failed, please try again." });
             }
-
-            // Use model.create() to create and save the post in one step
-            const savedPost = await model.create({_id: uuidv4(), caption: "default caption", category: "SENDS", postedBy: "123", img: img,});
-
-            res.status(201).json(savedPost); // Respond with the saved post
+            const newPost = {...post, _id: uuidv4(), caption: "default caption", category: "SENDS", postedBy: "123", img: img};
+            const savedPost = await dao.uploadImage(newPost);
+            res.status(201).json(savedPost);
         } catch (err) {
             res.status(500).json({ error: "Upload failed", details: err });
         }
