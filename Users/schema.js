@@ -16,8 +16,7 @@ const userSchema = new mongoose.Schema({
         default: "USER"
         ,
     },
-    homeGym: String,
-    postCount: String
+    homeGym: String
 },
     { collection: "users" }
 );

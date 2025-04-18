@@ -47,3 +47,10 @@ export async function deletePost(pid) {
     await model.deleteOne({ _id: pid });
     return 204;
 }
+
+// get all posts by the user with the given id
+export async function getPostsByUser(uid) {
+    const posts = await model.find({ postedBy: uid});
+    return posts;
+}
+

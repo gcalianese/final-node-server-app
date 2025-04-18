@@ -59,4 +59,11 @@ export default function PostRoutes(app) {
         const status = await dao.deletePost(pid);
         res.sendStatus(status);
      });
+
+    // get the posts posted by the user with the given uid
+    app.get("/api/posts/by/:uid", async (req, res) => {
+        const { uid } = req.params;
+        const posts = await dao.getPostsByUser(uid);
+        res.json(posts);
+     });
 }
