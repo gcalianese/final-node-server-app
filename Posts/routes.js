@@ -19,7 +19,7 @@ export default function PostRoutes(app) {
         res.json(posts);
     });
 
-    // Return posts marked SENDS for users the user with the given uid follows first of the given category
+    // Return posts marked with the given category for users the user with the given uid follows first of the given category
     app.get("/api/posts/:cat/:uid", async (req, res) => {
         const { cat, uid } = req.params;
         const followedUsers = await followsDao.getUsersFollowedBy(uid);
@@ -35,12 +35,7 @@ export default function PostRoutes(app) {
     });
 
     // Multer setup
-    const storage = multer.diskStorage({
-        destination: "uploads/", // Save files in 'uploads' folder
-        filename: (req, file, cb) => {
-            cb(null, Date.now() + "-" + file.originalname); // Unique filename
-        },
-    });
+    const storage = multer.memoryStorage();
     const upload = multer({ storage });
 
     // delete the post with the given pid
@@ -50,20 +45,32 @@ export default function PostRoutes(app) {
         res.sendStatus(status);
     });
 
-    // Add a post to the database, save the image to uploads folder
+    // upload a post with the image embedded
     app.post("/api/posts", upload.single("image"), async (req, res) => {
         try {
             const post = JSON.parse(req.body.post);
-            const img = req.file?.path; // Path to the uploaded file
+            const file = req.file;
 
-            if (!img) {
+            if (!file) {
                 return res.status(400).json({ error: "Image upload failed, please try again." });
             }
-            const newPost = { ...post, _id: uuidv4(), img: img };
+
+            const imageBuffer = file.buffer;
+            const contentType = file.mimetype;
+
+            const newPost = {
+                ...post,
+                _id: uuidv4(),
+                img: {
+                    data: imageBuffer,
+                    contentType: contentType,
+                },
+            };
+
             const savedPost = await dao.uploadImage(newPost);
             res.status(201).json(savedPost);
         } catch (err) {
-            res.status(500).json({ error: "Upload failed", details: err });
+            res.status(500).json({ error: "Upload failed", details: err.message });
         }
     });
 }

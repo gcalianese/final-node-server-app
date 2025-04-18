@@ -11,7 +11,10 @@ const postSchema = new mongoose.Schema({
             "GEAR",
             "FT"],
     },
-    img: String,
+    img: {
+        data: Buffer,
+        contentType: String,
+    },
     caption: String,
     likedBy: [{ type: String, ref: "UserModel" }],
 },
