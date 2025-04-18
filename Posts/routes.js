@@ -39,13 +39,13 @@ export default function PostRoutes(app) {
     // Add a post to the database, save the image to uploads folder
     app.post("/api/posts/sends", upload.single("image"), async (req, res) => {
         try {
-            const { post } = req.body;
+            const post = JSON.parse(req.body.post);
             const img = req.file?.path; // Path to the uploaded file
 
             if (!img) {
                 return res.status(400).json({ error: "Image upload failed, please try again." });
             }
-            const newPost = {...post, _id: uuidv4(), caption: "default caption", category: "SENDS", postedBy: "123", img: img};
+            const newPost = {...post, _id: uuidv4(), img: img};
             const savedPost = await dao.uploadImage(newPost);
             res.status(201).json(savedPost);
         } catch (err) {
