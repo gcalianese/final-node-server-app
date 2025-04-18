@@ -12,14 +12,14 @@ export default function PostRoutes(app) {
         res.json(sends);
     });
 
-    // Return posts marked SENDS for users the user with the given cid follows first
-    app.get("/api/posts/sends/:cid", async (req, res) => {
-        const { cid } = req.params;
-        const followedUsers = await followsDao.getUsersFollowedBy(cid);
+    // Return posts marked SENDS for users the user with the given uid follows first
+    app.get("/api/posts/sends/:uid", async (req, res) => {
+        const { uid } = req.params;
+        const followedUsers = await followsDao.getUsersFollowedBy(uid);
         const followedUserIds = followedUsers.map(user => user._id);
         const followedSends = await dao.getSendsByUsers(followedUserIds);
 
-        const nonFollowerUsers = await followsDao.getUsersNotFollowedBy(cid);
+        const nonFollowerUsers = await followsDao.getUsersNotFollowedBy(uid);
         const nonFollowedUserIds = nonFollowerUsers.map(user => user._id);
         const nonFollowedSends = await dao.getSendsByUsers(nonFollowedUserIds);
 
@@ -36,6 +36,7 @@ export default function PostRoutes(app) {
     });
     const upload = multer({ storage });
 
+    // Add a post to the database, save the image to uploads folder
     app.post("/api/posts/sends", upload.single("image"), async (req, res) => {
         try {
             const { post } = req.body;
@@ -51,4 +52,11 @@ export default function PostRoutes(app) {
             res.status(500).json({ error: "Upload failed", details: err });
         }
     });
+
+    // delete the post with the given pid
+    app.delete("/api/posts/:pid", async (req, res) => {
+        const { pid } = req.params;
+        const status = await dao.deletePost(pid);
+        res.sendStatus(status);
+     });
 }

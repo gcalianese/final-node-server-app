@@ -1,5 +1,7 @@
 import model from "./model.js"
 import userModel from "../Users/model.js"
+import fs from "fs/promises";
+import path from "path";
 
 // Return all posts marked SENDS
 export async function getAllSends() {
@@ -19,11 +21,6 @@ export async function getUsernamesForSends(sends) {
     return sendsWithUsernames;
 }
 
-// Return posts marked SENDS for users the user with the given cid follows first
-export function getSendsForUser(cid) {
-    return model.find({ category: "SENDS" });
-}
-
 // Return posts marked SENDS for the users with the given ids
 export async function getSendsByUsers(userIds) {
     const sends = await model.find({ category: "SENDS", postedBy: { $in: userIds } });
@@ -31,7 +28,22 @@ export async function getSendsByUsers(userIds) {
     return sendsWithUsernames;
 }
 
+// insert a post to the database
 export async function uploadImage(newPost) {
     const savedPost = await model.create(newPost);
     return savedPost;
+}
+
+// delete the post with the given pid from the database any associated picture
+export async function deletePost(pid) {
+    const post = await model.findOne({ _id: pid });
+    if (post.img) {
+        try {
+            await fs.unlink(post.img);
+        } catch (err) {
+            console.warn("Image deletion failed:", err.message);
+        }
+    }
+    await model.deleteOne({ _id: pid });
+    return 204;
 }
