@@ -8,6 +8,7 @@ import UserRoutes from "./Users/routes.js";
 import FollowRoutes from "./Follows/routes.js";
 import PostRoutes from "./Posts/routes.js";
 import multer from "multer";
+import SearchRoutes from "./Search/routes.js";
 
 const app = express()
 app.use(
@@ -37,6 +38,7 @@ app.use("/uploads", express.static("uploads"));
 UserRoutes(app);
 FollowRoutes(app);
 PostRoutes(app);
+SearchRoutes(app);
 
 const storage = multer.diskStorage({
   destination: "uploads/",
