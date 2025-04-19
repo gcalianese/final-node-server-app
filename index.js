@@ -7,9 +7,9 @@ import "dotenv/config";
 import UserRoutes from "./Users/routes.js";
 import FollowRoutes from "./Follows/routes.js";
 import PostRoutes from "./Posts/routes.js";
-import multer from "multer";
 import SearchRoutes from "./Search/routes.js";
 import CommentRoutes from "./Comments/routes.js";
+import LikeRoutes from "./Likes/routes.js";
 
 const app = express()
 app.use(
@@ -40,5 +40,6 @@ FollowRoutes(app);
 PostRoutes(app);
 SearchRoutes(app);
 CommentRoutes(app);
+LikeRoutes(app);
 
 app.listen(process.env.PORT || 4000)

@@ -17,4 +17,18 @@ export default function CommentRoutes(app) {
         res.json(newComment);
     });
 
+    // update a comment
+    app.put("/api/comments/update", async (req, res) => {
+        const comment = req.body;
+        const updatedComment = await dao.updateComment(comment);
+        res.json(updatedComment);
+    });
+
+    // delete a comment
+    app.delete("/api/comments/:cid", async (req, res) => {
+        const { cid } = req.params;
+        const status = await dao.deleteComment(cid);
+        res.sendStatus(200);
+    });
+
 }

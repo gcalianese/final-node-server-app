@@ -25,3 +25,14 @@ export async function createCommentForPost(comment) {
     const newComment = await model.create(comment);
     return newComment;
 }
+
+// Delete a comment
+export async function deleteComment(cid) {
+    const status = await model.deleteOne({ _id: cid });
+    return status;
+}
+
+// Update a comment
+export function updateComment(updates) {
+    return model.updateOne({ _id: updates._id }, { $set: updates });
+}
