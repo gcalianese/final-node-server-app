@@ -9,6 +9,7 @@ import FollowRoutes from "./Follows/routes.js";
 import PostRoutes from "./Posts/routes.js";
 import multer from "multer";
 import SearchRoutes from "./Search/routes.js";
+import CommentRoutes from "./Comments/routes.js";
 
 const app = express()
 app.use(
@@ -34,18 +35,10 @@ app.use(session(sessionOptions));
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/FinalProject"
 mongoose.connect(CONNECTION_STRING);
 app.use(express.json());
-app.use("/uploads", express.static("uploads"));
 UserRoutes(app);
 FollowRoutes(app);
 PostRoutes(app);
 SearchRoutes(app);
-
-const storage = multer.diskStorage({
-  destination: "uploads/",
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
-const upload = multer({ storage });
+CommentRoutes(app);
 
 app.listen(process.env.PORT || 4000)
