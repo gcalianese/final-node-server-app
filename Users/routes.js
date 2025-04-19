@@ -15,8 +15,8 @@ export default function UserRoutes(app) {
         res.json(newUser);
     });
 
-     // Update a user
-     app.put("/api/users", async (req, res) => {
+    // Update a user
+    app.put("/api/users", async (req, res) => {
         const updatedUser = await dao.updateUser(req.body);
         res.json(updatedUser);
     });
@@ -40,11 +40,18 @@ export default function UserRoutes(app) {
     });
 
 
-    // Get the profile for the user with the given cid
-    app.get("/api/users/:cid", async (req, res) => {
-        const { cid } = req.params;
-        const user = await dao.findUserById(cid)
+    // Get the profile for the user with the given uid
+    app.get("/api/users/:uid", async (req, res) => {
+        const { uid } = req.params;
+        const user = await dao.findUserById(uid)
         res.json(user);
+    });
+
+    // delete the user with the given uid
+    app.delete("/api/users/:uid", async (req, res) => {
+        const { uid } = req.params;
+        const status = await dao.deleteUser(uid)
+        res.sendStatus(200);
     });
 
     // Get the profile for the session

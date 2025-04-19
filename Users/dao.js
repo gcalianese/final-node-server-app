@@ -21,6 +21,11 @@ export function findUserByCredentials(username, password) {
 }
 
 // Find a user with the given
-export function findUserById(cid) {
-    return model.findById(cid);
+export function findUserById(uid) {
+    return model.findById(uid);
+}
+
+// Delete user with the given uid
+export function deleteUser(uid) {
+    return model.deleteOne({ _id: uid});
 }
