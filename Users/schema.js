@@ -7,11 +7,11 @@ const userSchema = new mongoose.Schema({
     email: String,
     phoneNumber: String,
     lastName: String,
-    dob: Date,
     role: {
         type: String,
         enum: [
             "ADMIN",
+            "MOD",
             "USER"],
         default: "USER"
         ,
