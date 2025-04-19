@@ -8,6 +8,13 @@ export default function UserRoutes(app) {
         res.send(status);
     });
 
+    // Create a new user, sign them in as "currentUser"
+    app.post("/api/users", async (req, res) => {
+        const newUser = await dao.createUser(req.body);
+        req.session["currentUser"] = newUser;
+        res.json(newUser);
+    });
+
     // Find a user with the given credentials to sign in
     app.post("/api/users/signin", async (req, res) => {
         const { username, password } = req.body;
