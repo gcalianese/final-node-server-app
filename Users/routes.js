@@ -15,6 +15,12 @@ export default function UserRoutes(app) {
         res.json(newUser);
     });
 
+     // Update a user
+     app.put("/api/users", async (req, res) => {
+        const updatedUser = await dao.updateUser(req.body);
+        res.json(updatedUser);
+    });
+
     // Find a user with the given credentials to sign in
     app.post("/api/users/signin", async (req, res) => {
         const { username, password } = req.body;
