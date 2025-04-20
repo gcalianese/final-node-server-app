@@ -1,7 +1,5 @@
 import model from "./model.js"
 import userModel from "../Users/model.js"
-import fs from "fs/promises";
-import path from "path";
 
 // Return all posts marked with the given category
 export async function getAllPostsWithCat(cat) {
@@ -47,13 +45,6 @@ export async function uploadImage(newPost) {
 // delete the post with the given pid from the database any associated picture
 export async function deletePost(pid) {
     const post = await model.findOne({ _id: pid });
-    if (post.img) {
-        try {
-            await fs.unlink(post.img);
-        } catch (err) {
-            console.warn("Image deletion failed:", err.message);
-        }
-    }
     await model.deleteOne({ _id: pid });
     return 204;
 }
