@@ -80,4 +80,11 @@ export default function PostRoutes(app) {
             res.status(500).json({ error: "Upload failed", details: err.message });
         }
     });
+
+    // update a post
+    app.put("/api/posts/:pid/:cap", async (req, res) => {
+        const { pid, cap } = req.params;
+        const updatedPost = await dao.updatePost(pid, cap);
+        res.json(updatedPost);
+    });
 }
