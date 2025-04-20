@@ -16,7 +16,8 @@ const userSchema = new mongoose.Schema({
         default: "USER"
         ,
     },
-    homeGym: String
+    homeGym: String,
+    favoritedGyms: [String],
 },
     { collection: "users" }
 );

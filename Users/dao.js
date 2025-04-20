@@ -11,8 +11,9 @@ export function createUser(newUser) {
 }
 
 // Update a user
-export function updateUser(user) {
-    return model.updateOne({ _id: user._id }, { $set: user });
+export async function updateUser(user) {
+    const status =  await model.updateOne({ _id: user._id }, { $set: user });
+    return status;
 }
 
 // Find a user with the given credentials to sign in

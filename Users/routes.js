@@ -63,14 +63,4 @@ export default function UserRoutes(app) {
         }
         res.json(currentUser);
     });
-
-    // Get the profile for the current user of the session
-    app.post("/api/users/profile", (req, res) => {
-        const currentUser = req.session["currentUser"];
-        if (!currentUser) {
-            res.sendStatus(401);
-            return;
-        }
-        res.json(currentUser);
-    });
 };
