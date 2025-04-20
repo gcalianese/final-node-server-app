@@ -15,7 +15,7 @@ export async function getUsernamesForComments(comments) {
 
 // Return all comments for the post with the given pid
 export async function getAllCommentsForPost(pid) {
-    const comments = await model.find({ postId: pid }).sort({ createdAt: -1 }).lean();
+    const comments = await model.find({ postId: pid }).lean();
     const commentsWithUsernames = await getUsernamesForComments(comments);
     return commentsWithUsernames;
 }
