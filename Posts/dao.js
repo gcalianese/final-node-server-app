@@ -64,3 +64,15 @@ export async function getAllPostsByUser(uid) {
     return posts;
 }
 
+// get the post with the given pid
+export async function getPost(pid) {
+    const post = await model.findById(pid);
+    const postsWithUsername = await getUsernamesForPosts([post]);
+    const postWithUsername = postsWithUsername[0];
+    return postWithUsername;
+}
+
+//update a post, ie its caption
+export function updatePost(pid, cap) {
+    return model.updateOne({ _id: pid }, { caption: cap });
+}

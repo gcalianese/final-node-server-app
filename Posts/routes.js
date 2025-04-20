@@ -12,6 +12,13 @@ export default function PostRoutes(app) {
         res.json(posts);
     });
 
+    // Return the post with the given pid
+    app.get("/api/posts/single/:pid", async (req, res) => {
+        const { pid } = req.params;
+        const post = await dao.getPost(pid);
+        res.json(post);
+    });
+
     // get the posts posted by the user with the given uid
     app.get("/api/posts/by/:uid", async (req, res) => {
         const { uid } = req.params;
@@ -72,5 +79,12 @@ export default function PostRoutes(app) {
         } catch (err) {
             res.status(500).json({ error: "Upload failed", details: err.message });
         }
+    });
+
+    // update a post
+    app.put("/api/posts/:pid/:cap", async (req, res) => {
+        const { pid, cap } = req.params;
+        const updatedPost = await dao.updatePost(pid, cap);
+        res.json(updatedPost);
     });
 }
