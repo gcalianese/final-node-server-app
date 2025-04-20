@@ -7,7 +7,6 @@ const postSchema = new mongoose.Schema({
         type: String,
         enum: [
             "SENDS",
-            "GYMS",
             "GEAR",
             "FT"],
     },
