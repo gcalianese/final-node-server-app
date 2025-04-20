@@ -64,3 +64,11 @@ export async function getAllPostsByUser(uid) {
     return posts;
 }
 
+// get the post with the given pid
+export async function getPost(pid) {
+    const post = await model.findById(pid);
+    const postsWithUsername = await getUsernamesForPosts([post]);
+    const postWithUsername = postsWithUsername[0];
+    return postWithUsername;
+}
+
