@@ -35,7 +35,7 @@ export default function PostRoutes(app) {
 
         const nonFollowerUsers = await followsDao.getUsersNotFollowedBy(uid);
         const nonFollowedUserIds = nonFollowerUsers.map(user => user._id);
-        const nonFollowedPosts = await dao.getPostsByUsers(cat, nonFollowedUserIds);
+        const nonFollowedPosts = (await dao.getPostsByUsers(cat, nonFollowedUserIds)).filter((post) => post.postedBy !== uid);
 
         const posts = followedPosts.concat(nonFollowedPosts);
         res.json(posts);

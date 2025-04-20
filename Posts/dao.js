@@ -52,7 +52,8 @@ export async function deletePost(pid) {
 // get all posts by the user with the given id
 export async function getAllPostsByUser(uid) {
     const posts = await model.find({ postedBy: uid }).sort({ createdAt: -1 });
-    return posts;
+    const postsWithUsername = await getUsernamesForPosts(posts);
+    return postsWithUsername;
 }
 
 // get the post with the given pid
