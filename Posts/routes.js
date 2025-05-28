@@ -8,7 +8,7 @@ export default function PostRoutes(app) {
     // Return all posts in the given category
     app.get("/api/posts/:cat", async (req, res) => {
         const { cat } = req.params;
-        const posts = await dao.getAllPostsWithCat(cat);
+        const posts = await dao.getAllPostsWithCat(cat, req.session["currentUser"]);
         res.json(posts);
     });
 
@@ -26,6 +26,7 @@ export default function PostRoutes(app) {
         res.json(posts);
     });
 
+    {/* Not used, will be replaced with a following feed vs non-following feed */}
     // Return posts marked with the given category for users the user with the given uid follows first of the given category
     app.get("/api/posts/:cat/:uid", async (req, res) => {
         const { cat, uid } = req.params;
