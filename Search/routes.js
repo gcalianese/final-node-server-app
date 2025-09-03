@@ -4,8 +4,17 @@ export default function SearchRoutes(app) {
     //Get lat/lng from zip code using Nominatim
     async function getCoordinates(zip) {
         try {
-            const url = `https://nominatim.openstreetmap.org/search?postalcode=${zip}&country=US&format=json`;
-            const response = await axios.get(url);
+            const url = "https://nominatim.openstreetmap.org/search";
+            const response = await axios.get(url, {
+                params: {
+                q: `${zip}, USA`,
+                format: "json",
+                limit: 1
+            },
+                headers: {
+                    "User-Agent": "ChalkTalkk/1.0"
+                }
+            });
             const data = response.data[0];
             if (!data) {
                 // Couldn't get coordinates for inputed zip, return empty for no results
@@ -37,7 +46,6 @@ export default function SearchRoutes(app) {
                     city: gymData.tags['addr:city'] || '',
                     postcode: gymData.tags['addr:postcode'] || ''
                 };
-            
                 return {
                     id: node.id,
                     lat: node.lat,
